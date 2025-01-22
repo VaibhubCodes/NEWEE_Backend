@@ -1,0 +1,18 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="module">
+    <h1>Bulk Upload Questions</h1>
+    <p>
+        <a href="{% url 'admin:download_csv_template' %}" class="button">Download CSV Template</a>
+    </p>
+    <form method="post" enctype="multipart/form-data" style="margin-top: 20px;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+            <button type="submit" class="button" style="margin-right: 10px;">Upload</button>
+            <a href="{% url 'admin:questions_question_changelist' %}" class="button">Back to Questions</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
