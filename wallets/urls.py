@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     WalletView, CreditWalletView, DebitWalletView, TransactionHistoryView,
-    ApplyReferralCodeView, XamCoinPurchaseView, XamCoinToMoneyConversionView, XamCoinConversionDetailsView
+    ApplyReferralCodeView, XamCoinPurchaseView, XamCoinToMoneyConversionView, XamCoinConversionDetailsView, ReferralStatsView
 )
 
 urlpatterns = [
@@ -13,4 +13,5 @@ urlpatterns = [
     path('xamcoins/purchase/', XamCoinPurchaseView.as_view(), name='xamcoins-purchase'),
     path('xamcoins/convert/', XamCoinToMoneyConversionView.as_view(), name='xamcoins-convert'),
     path('xamcoins/conversion-details/', XamCoinConversionDetailsView.as_view(), name='xamcoins-conversion-details'),
+    path('referral/stats/', ReferralStatsView.as_view(), name='referral-stats'),
 ]

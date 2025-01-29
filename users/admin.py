@@ -8,6 +8,8 @@ class CustomUserAdmin(admin.ModelAdmin):
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
     list_display = ('user', 'school_id', 'location')
+    search_fields = ('user__email', 'user__name', 'school_id')
+    filter_horizontal = ('subjects',)  # For better ManyToManyField management
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):

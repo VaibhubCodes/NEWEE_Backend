@@ -84,8 +84,9 @@ class Referral(models.Model):
 
 
 class ReferralBonus(models.Model):
-    referral_amount = models.DecimalField(max_digits=10, decimal_places=2, default=50.00)  # For referred user
-    referrer_amount = models.DecimalField(max_digits=10, decimal_places=2, default=100.00)  # For referrer
+    milestone = models.IntegerField(default=1, help_text="Number of referrals required for this bonus")
+    referrer_amount = models.DecimalField(max_digits=10, decimal_places=2, default=100.00, help_text="Bonus for referrer when reaching milestone")
+    referred_user_bonus = models.DecimalField(max_digits=10, decimal_places=2, default=50.00, help_text="One-time bonus for referred user on signup")
 
     def __str__(self):
-        return f"Referral: {self.referral_amount}, Referrer: {self.referrer_amount}"
+        return f"{self.milestone} Referrals → Referrer Bonus: {self.referrer_amount}, Referred User Bonus: {self.referred_user_bonus}"

@@ -10,10 +10,17 @@ class StudyMaterial(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="study_materials")
     chapter = models.ForeignKey(Chapter, on_delete=models.SET_NULL, null=True, blank=True, related_name="study_materials")
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True, blank=True, related_name="study_materials")
-    is_paid = models.BooleanField(default=False, help_text="Is this course paid?")
-    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, help_text="Price if paid course")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    # Premium content-related fields
+    is_premium = models.BooleanField(default=False, help_text="Mark this study material as premium.")
+    unlock_cost = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0.00,
+        help_text="Unlock cost in XamCoins or Wallet Money."
+    )
 
     def __str__(self):
         return self.title

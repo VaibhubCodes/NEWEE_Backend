@@ -23,5 +23,5 @@ class BlogSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'title', 'content', 'main_image', 'additional_images',
             'subject', 'chapter', 'topic', 'tags', 'author',
-            'created_at', 'updated_at', 'view_count', 'comments'
+            'created_at', 'updated_at', 'view_count', 'comments','is_premium','unlock_cost'
         ]

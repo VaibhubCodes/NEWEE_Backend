@@ -12,5 +12,14 @@ class Ebook(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # Premium content-related fields
+    is_premium = models.BooleanField(default=False, help_text="Mark this ebook as premium.")
+    unlock_cost = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        default=0.00, 
+        help_text="Unlock cost in XamCoins or Wallet Money."
+    )
+
     def __str__(self):
         return self.title

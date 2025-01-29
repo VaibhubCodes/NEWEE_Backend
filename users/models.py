@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
+from questions.models import Subject
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -61,7 +62,7 @@ class Teacher(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='teacher_profile')
     school_id = models.CharField(max_length=100)
     location = models.CharField(max_length=255)
-
+    subjects = models.ManyToManyField(Subject, related_name="teachers", blank=True, help_text="Subjects taught by the teacher")
     def __str__(self):
         return self.user.name
 

@@ -3,9 +3,9 @@ from .models import StudyMaterial, Lesson, Enrollment
 
 @admin.register(StudyMaterial)
 class StudyMaterialAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subject', 'is_paid', 'price', 'created_at')
+    list_display = ('title', 'subject', 'is_premium', 'unlock_cost', 'created_at')
     search_fields = ('title', 'description')
-    list_filter = ('subject', 'is_paid', 'created_at')
+    list_filter = ('subject', 'is_premium', 'created_at')
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):

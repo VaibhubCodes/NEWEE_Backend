@@ -11,7 +11,7 @@ class StudyMaterialSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StudyMaterial
-        fields = ['id', 'title', 'description', 'subject', 'chapter', 'topic', 'is_paid', 'price', 'created_at', 'updated_at', 'lessons']
+        fields = ['id', 'title', 'description', 'subject', 'chapter', 'topic', 'is_premium', 'unlock_cost', 'created_at', 'updated_at', 'lessons']
 
 class EnrollmentSerializer(serializers.ModelSerializer):
     study_material = StudyMaterialSerializer(read_only=True)

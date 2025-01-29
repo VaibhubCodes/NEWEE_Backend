@@ -29,7 +29,12 @@ class ReferralAdmin(admin.ModelAdmin):
 
 @admin.register(ReferralBonus)
 class ReferralBonusAdmin(admin.ModelAdmin):
-    list_display = ('referral_amount', 'referrer_amount')
+    list_display = ('milestone', 'referrer_amount', 'referred_user_bonus')
+    list_editable = ('referrer_amount', 'referred_user_bonus')
+    ordering = ('milestone',)
+    search_fields = ('milestone',)
+    list_filter = ('milestone',)
+
 
 
 @admin.register(XamCoinConversion)

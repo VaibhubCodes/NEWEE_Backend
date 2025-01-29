@@ -75,6 +75,9 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'ebooks',
     'StudyMaterial',
+    'rewards',
+    'content_locking',
+    'mentorship',
 
 ]
 

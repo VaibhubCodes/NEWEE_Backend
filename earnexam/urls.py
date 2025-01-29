@@ -33,6 +33,9 @@ urlpatterns = [
     path('api/blogs/', include('blogs.urls')),
     path('api/ebooks/', include('ebooks.urls')),
     path('api/StudyMaterial/', include('StudyMaterial.urls')),
+    path('api/rewards/', include('rewards.urls')),
+    path('api/content_locking/', include('content_locking.urls')),
+    path('api/mentorship/', include('mentorship.urls')),
 ]
 
 if settings.DEBUG:

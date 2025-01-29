@@ -70,6 +70,8 @@ class TransactionHistoryView(APIView):
 
 
 class ApplyReferralCodeView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         serializer = ReferralCodeSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -85,20 +87,21 @@ class ApplyReferralCodeView(APIView):
             # Create referral record
             Referral.objects.create(referrer=referrer, referred=referred_user)
 
-            # Fetch referral bonus amounts
+            # Fetch the initial referral bonus (only applies once per referred user)
             referral_bonus = ReferralBonus.objects.first()
             if referral_bonus:
-                # Update wallets with bonus amounts
                 referrer_wallet = Wallet.objects.get(user=referrer, wallet_type='earnexam')
                 referred_wallet = Wallet.objects.get(user=referred_user, wallet_type='earnexam')
 
-                referrer_wallet.balance += referral_bonus.referrer_amount
-                referred_wallet.balance += referral_bonus.referral_amount
-
-                referrer_wallet.save()
+                # Credit initial referral bonus to referred user
+                referred_wallet.balance += referral_bonus.referred_user_bonus
                 referred_wallet.save()
+                
+                # Credit initial bonus to referrer
+                referrer_wallet.balance += referral_bonus.referrer_amount
+                referrer_wallet.save()
 
-                # Create transactions for referral bonuses
+                # Create transaction records for the bonuses
                 Transaction.objects.create(
                     wallet=referrer_wallet,
                     transaction_type='credit',
@@ -108,13 +111,64 @@ class ApplyReferralCodeView(APIView):
                 Transaction.objects.create(
                     wallet=referred_wallet,
                     transaction_type='credit',
-                    amount=referral_bonus.referral_amount,
-                    description=f"Referral bonus for being referred by {referrer.email}"
+                    amount=referral_bonus.referred_user_bonus,
+                    description=f"Signup bonus for being referred by {referrer.email}"
                 )
 
-            return Response({"success": "Referral applied successfully."}, status=status.HTTP_200_OK)
+            # Count total referrals for referrer (for milestone tracking)
+            total_referrals = Referral.objects.filter(referrer=referrer).count()
+
+            # Get milestone bonus based on referrals count (applies only to referrer)
+            milestone_bonus = ReferralBonus.objects.filter(milestone=total_referrals).first()
+            if milestone_bonus:
+                referrer_wallet.balance += milestone_bonus.referrer_amount
+                referrer_wallet.save()
+
+                # Record transaction for milestone bonus
+                Transaction.objects.create(
+                    wallet=referrer_wallet,
+                    transaction_type='credit',
+                    amount=milestone_bonus.referrer_amount,
+                    description=f"Milestone bonus for reaching {total_referrals} referrals"
+                )
+
+            return Response({
+                "success": "Referral applied successfully.",
+                "message": f"Referrer {referrer.email} has received bonuses!",
+                "next_milestone_progress": f"{total_referrals} referrals completed."
+            }, status=status.HTTP_200_OK)
+
         except CustomUser.DoesNotExist:
             return Response({"error": "Invalid referral code."}, status=status.HTTP_400_BAD_REQUEST)
+
+class ReferralStatsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        total_referrals = Referral.objects.filter(referrer=user).count()
+
+        # Get the next milestone
+        next_milestone = ReferralBonus.objects.filter(milestone__gt=total_referrals).order_by('milestone').first()
+        next_milestone_referrals = next_milestone.milestone if next_milestone else None
+
+        # Calculate referrals needed for the next milestone
+        referrals_needed = next_milestone_referrals - total_referrals if next_milestone_referrals else None
+
+        # Get total earned milestone bonus so far
+        total_bonus_earned = sum([
+            bonus.referrer_amount for bonus in ReferralBonus.objects.filter(milestone__lte=total_referrals)
+        ])
+
+        response_data = {
+            "total_referrals": total_referrals,
+            "total_bonus_earned": total_bonus_earned,
+            "next_milestone": next_milestone_referrals,
+            "referrals_needed_for_next_milestone": referrals_needed
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
 
 
 
