@@ -1,0 +1,61 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+*.venv
+*.env
+
+# Django stuff
+*.log
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+*.pot
+*.pyc
+*.pyo
+*.pyd
+
+# Secrets and environment variables
+.env
+*.pem
+config/settings/local.py
+config/settings/.env
+
+# Migrations
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Pytest and test files
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+htmlcov/
+
+# MyPy
+.mypy_cache/
+
+# Celery
+celerybeat-schedule
+
+# JetBrains IDE
+.idea/
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+repopack-output.txt

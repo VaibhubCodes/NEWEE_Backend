@@ -1,0 +1,57 @@
+# Django Core
+Django
+djangorestframework
+djangorestframework-simplejwt
+django-cors-headers
+
+# Authentication
+google-auth
+google-auth-oauthlib
+django-allauth  # For Google OAuth integration
+
+# Rich Text Editor
+django-ckeditor
+
+# Database
+psycopg2-binary
+
+# Task Queue
+celery
+django-celery-beat
+redis
+
+# File Handling
+Pillow
+python-magic
+
+# Geocoding and Location
+geopy
+requests
+
+# Payment Integration
+razorpay
+
+# Utilities
+python-dotenv
+pytz
+
+# Security
+django-filter
+django-guardian
+
+# API Documentation
+drf-yasg
+
+# Testing
+pytest
+pytest-django
+factory-boy
+
+# Development Tools
+black
+flake8
+isort
+
+# Production
+gunicorn
+whitenoise
