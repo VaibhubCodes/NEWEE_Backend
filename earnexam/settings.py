@@ -9,6 +9,10 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+import os
+
+OPENAI_API_KEY = os.getenv("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")  # Store it as an environment variable
+
 
 from pathlib import Path
 from datetime import timedelta
@@ -51,6 +55,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,9 +83,20 @@ INSTALLED_APPS = [
     'rewards',
     'content_locking',
     'mentorship',
+    'ai',
+    'chat_support',
+    
+    'channels',
 
 ]
+ASGI_APPLICATION = 'earnexam.asgi.application'  # ✅ Use your actual project name
 
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",  # Use Redis for production
+    },
+}
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_CONFIGS = {
     'default': {
@@ -180,7 +196,30 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+
+import os
+
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = "/static/"
+
+# ✅ Ensure collected static files are stored properly
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# ✅ Add extra directories where Django should look for static files
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+# ✅ Ensure Django serves static files in development
+if DEBUG:
+    import mimetypes
+    mimetypes.add_type("text/css", ".css", True)
+    mimetypes.add_type("application/javascript", ".js", True)
+
+    INSTALLED_APPS.append("whitenoise.runserver_nostatic")  # Prevent Django from ignoring static files
+    MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")    # Serve static files
+
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 

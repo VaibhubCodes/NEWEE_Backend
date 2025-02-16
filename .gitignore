@@ -3,6 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
 # Virtual environment
 venv/
 env/
@@ -57,5 +62,5 @@ celerybeat-schedule
 # Windows
 Thumbs.db
 ehthumbs.db
-
+.DS_Store
 repopack-output.txt

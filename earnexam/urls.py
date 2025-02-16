@@ -36,6 +36,8 @@ urlpatterns = [
     path('api/rewards/', include('rewards.urls')),
     path('api/content_locking/', include('content_locking.urls')),
     path('api/mentorship/', include('mentorship.urls')),
+    path('api/ai/', include('ai.urls')),
+    path('api/chat_support/', include('chat_support.urls')),
 ]
 
 if settings.DEBUG:
